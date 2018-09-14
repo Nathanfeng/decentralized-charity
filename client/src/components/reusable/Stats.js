@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Card} from "semantic-ui-react";
-// import { Form, Table, Button, Card, Grid} from "semantic-ui-react";
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
@@ -31,7 +30,6 @@ class Stats extends Component {
       let milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
       const summary = await instance.fundSummary({from: accounts[0]});
 
-      console.log(summary);
       this.setState({
         manager: summary[0],
         totalDonors: summary[1].toNumber(),
@@ -64,9 +62,7 @@ class Stats extends Component {
       targetAmount,
       acceptingDonations,
       active,
-      fundContract,
-      milestoneCount,
-      accounts
+      milestoneCount
     } = this.state;
 
     const items = [
@@ -115,13 +111,12 @@ class Stats extends Component {
     },
     {
       header: active,
-      meta: 'Fund Acive',
+      meta: 'Accepting Votes',
       description:
-        'Whether the fund has been activated by the fund manager'
+        'Whether the fund is accepting votes from donors on milestones'
     }
   ];
     return <Card.Group items= {items}/>
-
   }
 
   render() {

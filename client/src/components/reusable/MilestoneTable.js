@@ -1,56 +1,51 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import MilestoneRow from './MilestoneRow';
+import Fund from "../../contracts/Fund.json";
+import getWeb3 from "../../utils/getWeb3";
+import truffleContract from "truffle-contract";
 
 class MilestoneTable extends Component {
-
-  static async getInitialProps(props) {
-    const {accounts, fundContract} = this.props;
-
-    const milestoneCount = await fundContract.getMilestonesCount().call();
-    const milestones = await Promise.all(
-      Array(parseInt(milestoneCount))
-        .fill()
-        .map((element, index) => {
-          return fundContract.milestones(index).call();
-        })
-    );
-
-    return { accounts, milestones, milestoneCount, fundContract };
+  state = {
+    accounts: "",
+    fundContract: "",
+    milestones: ""
   }
 
-    onPass = async () => {
-      const {accounts, fundContract} = this.props;
-      await fundContract.methods.recordVote(true).send({
-        from: accounts[0]
-      });
-    };
-
-    onFail = async () => {
-      const {accounts, fundContract} = this.props;
-      await fundContract.methods.recordVote(false).send({
-        from: accounts[0]
-      });
-    };
-
+  componentWillMount = async () => {
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+      const fundContract = truffleContract(Fund);
+      fundContract.setProvider(web3.currentProvider);
+      const instance = await fundContract.deployed();
+      let milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
+      milestoneCount = milestoneCount.toNumber();
+      const milestones = await Promise.all(
+        Array(milestoneCount)
+          .fill()
+          .map((element, index) => {
+            return instance.milestones(index, {from: accounts[0]});
+        })
+      );
+      this.setState({accounts, fundContract: instance, milestones, milestoneCount}, this.runExample);
+    } catch (error) {
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      );
+      console.log(error);
+    }
+  };
 
   renderRows() {
-    return this.props.milestones.map((milestone, index) => {
-      return (
-        <MilestoneRow
-          key={index}
-          id={index}
-          // request={request}
-          address={this.props.address}
-        />
-      );
+    return Array(this.state.milestoneCount).fill().map((_, index) => {
+      console.log(index);
+      return <MilestoneRow key={index} id={index}/>
     });
   }
 
-
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
-
     return (
       <Table>
         <Header>
@@ -63,11 +58,11 @@ class MilestoneTable extends Component {
             <HeaderCell>Fails Milestone</HeaderCell>
           </Row>
         </Header>
-        {/* <Body>{this.renderRows()}</Body> */}
+        <Body>{this.renderRows()}</Body>
       </Table>
     )
   }
-}
 
+}
 
 export default MilestoneTable;

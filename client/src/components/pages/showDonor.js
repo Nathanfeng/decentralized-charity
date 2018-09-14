@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import {NavLink} from 'react-router-dom';
 import Layout from "../reusable/Layout";
-import Header from "../reusable/Header";
-import { Form, Table, Button, Card, Grid} from "semantic-ui-react";
+import { Form, Button} from "semantic-ui-react";
 import ContributeForm from "../reusable/ContributeForm";
 import MilestoneTable from "../reusable/MilestoneTable";
 import Stats from "../reusable/Stats";
@@ -55,7 +54,6 @@ class ShowDonor extends Component {
 
 
   render() {
-    const { Header, Row, HeaderCell, Body } = Table;
       return (
 
         <Layout>
@@ -69,28 +67,14 @@ class ShowDonor extends Component {
           </p>
           <ContributeForm />
 
-        <div style={{ marginTop: "10px"}}>
-          <NavLink to="/showManager">
-             <div>Click here to view the fund details as a fund manager</div>
-          </NavLink>
-        </div>
-
+          <div style={{ marginTop: "10px"}}>
+            <NavLink to="/showManager">
+               <div>Click here to view the fund details as a fund manager</div>
+            </NavLink>
+          </div>
 
           <h4>Current Milestones</h4>
-          <Table>
-            <Header>
-              <Row>
-                <HeaderCell>ID</HeaderCell>
-                <HeaderCell>Title</HeaderCell>
-                <HeaderCell>Description</HeaderCell>
-                <HeaderCell>Pass Rate</HeaderCell>
-                <HeaderCell>Meets Milestone</HeaderCell>
-                <HeaderCell>Fails Milestone</HeaderCell>
-              </Row>
-            </Header>
-            {/* <Body>{this.renderRows()}</Body> */}
-          </Table>
-          {/* <MilestoneTable/> */}
+          <MilestoneTable/>
 
           <h3>Claim Funds</h3>
           <p>

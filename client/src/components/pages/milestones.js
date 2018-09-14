@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
-import { Table, Form, Button, Input, Message } from 'semantic-ui-react';
+import { Table, Form, Button, Input } from 'semantic-ui-react';
 import Layout from "../reusable/Layout";
-import Router from '../../routers/appRouter';
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
@@ -54,7 +53,7 @@ class Milestones extends Component {
   };
 
   onDeploy = async (event) => {
-    const {title, description, fundContract, accounts} = this.state;
+    const {fundContract, accounts} = this.state;
     this.setState({ deployLoading: true, errorMessage: ""})
 
     try {
@@ -69,7 +68,7 @@ class Milestones extends Component {
 
 
   render() {
-    const { Header, Row, HeaderCell, Body } = Table;
+    const { Header, Row, HeaderCell } = Table;
     return (
       <Layout>
         <h3>Step 2: Add Milestones to Your Fund</h3>

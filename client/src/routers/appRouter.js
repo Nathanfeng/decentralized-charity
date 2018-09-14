@@ -5,7 +5,6 @@ import Milestones from "../components/pages/milestones";
 import New from "../components/pages/new";
 import ShowDonor from "../components/pages/showDonor";
 import ShowManager from "../components/pages/showManager";
-import App from '../App';
 
 class Router extends Component {
   render(){

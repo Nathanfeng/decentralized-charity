@@ -1,11 +1,8 @@
 import React, {Component} from "react";
 import {NavLink} from 'react-router-dom';
 import Layout from "../reusable/Layout";
-import Header from "../reusable/Header";
 import Stats from "../reusable/Stats";
-import { Form, Table, Button, Card, Grid} from "semantic-ui-react";
-import ContributeForm from "../reusable/ContributeForm";
-import MilestoneTable from "../reusable/MilestoneTable"
+import { Form, Table, Button} from "semantic-ui-react";
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
@@ -25,7 +22,6 @@ class ShowManager extends Component {
     try {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
-
       const fundContract = truffleContract(Fund);
       fundContract.setProvider(web3.currentProvider);
       const instance = await fundContract.deployed();
@@ -44,7 +40,7 @@ class ShowManager extends Component {
 
     try {
     await fundContract.activateFund({
-        from:accounts[0]
+        from: accounts[0]
       });
       // Router.pushRoute("/milestones");
     } catch (err) {
@@ -69,7 +65,6 @@ class ShowManager extends Component {
 
   renderRows = () => {
     const { Row, Cell } = Table;
-    const {accounts, fundContract, milestones} = this.props;
 
     return this.props.milestones.map((milestone, index) => {
       return (
@@ -106,7 +101,7 @@ class ShowManager extends Component {
 
 
   render() {
-    const { Header, Row, HeaderCell, Body } = Table;
+    const { Header, Row, HeaderCell} = Table;
       return (
 
         <Layout>

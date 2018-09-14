@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Card , Button} from 'semantic-ui-react';
+import { Container, Button} from 'semantic-ui-react';
 import Layout from '../reusable/Layout';
 import {NavLink} from 'react-router-dom';
 
@@ -24,23 +24,23 @@ class FundIndex extends Component {
           raise a fund through the Decentralized Charity Platform
         </p>
         <Container>
-        <div class="ui two column grid">
-          <div class="column">
-            <div class="ui fluid vertical steps">
-              <div class="completed step">
-                <div class="content">
-                  <div class="title">1. Initiate a Fund</div>
-                  <div class="description">
+        <div className="ui two column grid">
+          <div className="column">
+            <div className="ui fluid vertical steps">
+              <div className="completed step">
+                <div className="content">
+                  <div className="title">1. Initiate a Fund</div>
+                <div className="description">
                     Get started by providing basic information about the fund
                     you're raising like title, description, min number of donors,
                     and target amount to raise.
                   </div>
                 </div>
               </div>
-              <div class="completed step">
-                <div class="content">
-                  <div class="title">2. Add Milestones</div>
-                  <div class="description">
+              <div className="completed step">
+                <div className="content">
+                  <div className="title">2. Add Milestones</div>
+                <div className="description">
                     Milestones will divide the fund into equal installments that
                     will be paid depending on the charity reaching those milestones.
                     If the the milestones are not reached donors can opt to retrieve
@@ -48,19 +48,19 @@ class FundIndex extends Component {
                   </div>
                 </div>
               </div>
-              <div class="completed step">
-                <div class="content">
-                  <div class="title">3. Start Fundraising</div>
-                  <div class="description">
+              <div className="completed step">
+                <div className="content">
+                  <div className="title">3. Start Fundraising</div>
+                <div className="description">
                     Starting fundraising opens the fund for donors to donate to your
                     cause.
                   </div>
                 </div>
               </div>
-              <div class="completed step">
-                <div class="content">
-                  <div class="title">4. Activate Fund</div>
-                  <div class="description">
+              <div className="completed step">
+                <div className="content">
+                  <div className="title">4. Activate Fund</div>
+                <div className="description">
                     Once the fundraising goal and minimum number of donors has been
                     met, you can Activate the fund. Activating the fund closes the fund
                     to donations and automatically sends you the first installment to
@@ -68,10 +68,10 @@ class FundIndex extends Component {
                   </div>
                 </div>
               </div>
-              <div class="completed step">
-                <div class="content">
-                  <div class="title">5. Update Progress and Trigger Next Milestone</div>
-                  <div class="description">
+              <div className="completed step">
+                <div className="content">
+                  <div className="title">5. Update Progress and Trigger Next Milestone</div>
+                <div className="description">
                     The next step is updating your donors and waiting for them to vote on
                     whether you've achieved your milestone. If you've achieved your milestone,
                     you can trigger the next milestone, which will transfer you the next
@@ -87,18 +87,17 @@ class FundIndex extends Component {
 
         <div>
         <NavLink to='/new'>
-          <a>
+          <div>
             <Button
               style={{marginTop: "20px", marginBottom: "10px"}}
-              floated="top"
               content="Get Started Raising a Fund!"
               primary
               />
-          </a>
+          </div>
         </NavLink>
         <br/>
         <NavLink to='/showManager' style={{marginTop: "30px"}}>
-           <a>Click here to view the fund details as a fund manager</a>
+           <div>Click here to view the fund details as a fund manager</div>
         </NavLink>
         <h3>For Donors</h3>
         <p >
@@ -110,7 +109,7 @@ class FundIndex extends Component {
         </p>
         <div style={{ marginBottom: "30px"}}>
           <NavLink to='/showManager' style={{marginTop: "30px"}}>
-             <a>Click here to view the fund details as a donor </a>
+             <div>Click here to view the fund details as a donor </div>
           </NavLink>
         </div>
 
