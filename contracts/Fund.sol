@@ -124,19 +124,19 @@ contract Fund is Ownable, Pausable {
 	 */
 
 	function initializeFund(
-		string name,
-		string descrip,
-		uint target,
-		uint minDonors
+		string _title,
+		string _description,
+		uint _targetAmount,
+		uint _minNumberDonators
 		)
 		public
 		onlyOwner
 		{
 		require(!fundInitialized);
-		title = name;
-		description = descrip;
-		targetAmount = target;
-		minNumberDonators = minDonors;
+		title = _title;
+		description = _description;
+		targetAmount = _targetAmount;
+		minNumberDonators = _minNumberDonators;
 		fundInitialized = true;
 		emit FundInitialized(msg.sender, title, description, targetAmount, minNumberDonators);
 	}

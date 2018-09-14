@@ -10,10 +10,10 @@ class FundNew extends Component {
   state = {
     accounts: null,
     fundContract: null,
-    name: "",
-    descrip: "",
-    target: "",
-    minDonors: "",
+    title: "",
+    description: "",
+    targetAmount: "",
+    minNumberDonators: "",
     errorMessage: "",
     loading: false
   };
@@ -22,12 +22,15 @@ componentDidMount = async () => {
   try {
     const web3 = await getWeb3();
     const accounts = await web3.eth.getAccounts();
-
     const fundContract = truffleContract(Fund);
     fundContract.setProvider(web3.currentProvider);
     const instance = await fundContract.deployed();
 
-    this.setState({accounts, fundContract: instance }, this.runExample);
+    this.setState({
+      accounts,
+      fundContract: instance
+    },
+    this.runExample);
   } catch (error) {
     alert(
       `Failed to load web3, accounts, or contract. Check console for details.`
@@ -38,14 +41,21 @@ componentDidMount = async () => {
 
   onSubmit = async (event) => {
     this.setState({ loading: true, errorMessage: ""});
-    const {name, descrip, target, minDonors, accounts, fundContract} = this.state;
-
+    const {
+      title,
+      description,
+      targetAmount,
+      minNumberDonators,
+      accounts,
+      fundContract
+    } = this.state;
+    
     try {
     await fundContract.initializeFund(
-      name,
-      descrip,
-      target,
-      minDonors,
+      title,
+      description,
+      targetAmount,
+      minNumberDonators,
       { from: accounts[0] }
     );
       // Router.pushRoute("/milestones");

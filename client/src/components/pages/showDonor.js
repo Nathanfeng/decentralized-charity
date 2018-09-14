@@ -59,11 +59,7 @@ class ShowDonor extends Component {
       return (
 
         <Layout>
-          <h2>{this.props.title}</h2>
-          <p>{this.props.description}</p>
-          <h4>
-            Fund Details
-          </h4>
+
           <Stats/>
 
           <h3>Donate to this Fund</h3>
@@ -73,9 +69,11 @@ class ShowDonor extends Component {
           </p>
           <ContributeForm />
 
+        <div style={{ marginTop: "10px"}}>
           <NavLink to="/showManager">
              <div>Click here to view the fund details as a fund manager</div>
-           </NavLink>
+          </NavLink>
+        </div>
 
 
           <h4>Current Milestones</h4>

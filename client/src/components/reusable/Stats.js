@@ -17,7 +17,7 @@ class Stats extends Component {
     title: "",
     description: "",
     fundContract: "",
-    milestoneCount: "",
+    milestoneCount: 0,
     accounts: ""
   }
 
@@ -28,7 +28,7 @@ class Stats extends Component {
       const fundContract = truffleContract(Fund);
       fundContract.setProvider(web3.currentProvider);
       const instance = await fundContract.deployed();
-      const milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
+      let milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
       const summary = await instance.fundSummary({from: accounts[0]});
 
       console.log(summary);
@@ -43,7 +43,7 @@ class Stats extends Component {
         title: summary[7].toString(),
         description: summary[8].toString(),
         fundContract: instance,
-        milestoneCount,
+        milestoneCount: milestoneCount.toNumber(),
         accounts
       }, this.runExample);
 
@@ -78,6 +78,12 @@ class Stats extends Component {
       },
 
       {
+      header: milestoneCount,
+      meta: 'Number of Milestones',
+      description:
+        'This is the total number of milestones in the fund'
+    },
+      {
       header: totalDonors,
       meta: 'Total Donors',
       description:
@@ -91,7 +97,7 @@ class Stats extends Component {
     },
     {
       header: totalDonated,
-      meta: 'Total Donated',
+      meta: 'Amount Donated',
       description:
         'The total amount donated to the fund so far in wei'
     },
@@ -99,7 +105,7 @@ class Stats extends Component {
       header: targetAmount,
       meta: 'Target Amount',
       description:
-        'This is the minimum amount that the fund is hoping to raise'
+        'This is the minimum amount in wei that the fund is hoping to raise to deploy the fund'
     },
     {
       header: acceptingDonations,
@@ -121,8 +127,8 @@ class Stats extends Component {
   render() {
     return (
       <div>
-        <h3>{this.state.title.toString()}</h3>
-        <h3>{this.state.description.toString()}</h3>
+        <h2>{this.state.title.toString()}</h2>
+        <p>{this.state.description.toString()}</p>
         {this.renderCards()}
       </div>
     )
