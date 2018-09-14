@@ -2,118 +2,48 @@ import React, {Component} from "react";
 import {NavLink} from 'react-router-dom';
 import Layout from "../reusable/Layout";
 import Header from "../reusable/Header";
+import Stats from "../reusable/Stats";
 import { Form, Table, Button, Card, Grid} from "semantic-ui-react";
 import ContributeForm from "../reusable/ContributeForm";
 import MilestoneTable from "../reusable/MilestoneTable"
+import Fund from "../../contracts/Fund.json";
+import getWeb3 from "../../utils/getWeb3";
+import truffleContract from "truffle-contract";
 // import RequestRow from '../components/RequestRow';
 
 
 class ShowManager extends Component {
 
   state = {
+    fundContract: "",
+    accounts: "",
     errorMessage: "",
     loading: false
   };
 
-  static async getInitialProps(props) {
-    const {accounts, fundContract} = this.props;
-    const milestoneCount = await fundContract.methods.getMilestonesCount().call();
-    const milestones = await Promise.all(
-      Array(parseInt(milestoneCount))
-        .fill()
-        .map((element, index) => {
-          return fundContract.methods.milestones(index).call();
-        })
-    );
-    const summary = await fundContract.methods.fundSummary().call();
-    return {
-      address: summary[0],
-      totalDonors: summary[1],
-      minNumberDonators: summary[2],
-      totalDonated: summary[3],
-      targetAmount: summary[4],
-      acceptingDonations: summary[5],
-      active: summary[6],
-      title: summary[7],
-      description: summary[8],
-      milestones,
-      milestoneCount,
-      fundContract,
-      accounts
-    };
-  }
+  componentDidMount = async () => {
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
 
-  renderCards() {
-    const {
-      manager,
-      totalDonors,
-      minNumberDonators,
-      totalDonated,
-      targetAmount,
-      acceptingDonations,
-      active,
-      accounts,
-      fundContract,
-      milestoneCount
-    } = this.props;
+      const fundContract = truffleContract(Fund);
+      fundContract.setProvider(web3.currentProvider);
+      const instance = await fundContract.deployed();
 
-
-    const items = [
-      {
-        header: manager,
-        meta: "Address of Manager",
-        description: "Manager that created this fund",
-        style: { overflowWrap: "break-word"}
-      },
-
-      {
-      header: totalDonors,
-      meta: 'Total Donors',
-      description:
-        'This is the total number of addresses that have donated to the fund'
-    },
-    {
-      header: minNumberDonators,
-      meta: 'Minimum Number of Donors',
-      description:
-        'The minimum number of donors for the fund to be deployed'
-    },
-    {
-      header: totalDonated,
-      meta: 'Total Donated',
-      description:
-        'The total amount donated to the fund so far'
-    },
-    {
-      header: targetAmount,
-      meta: 'Target Amount',
-      description:
-        'This is the minimum amount that the fund is hoping to raise'
-    },
-    {
-      header: acceptingDonations,
-      meta: 'Accepting Donations',
-      description:
-        'Number of people who have already donated to this fund'
-    },
-    {
-      header: active,
-      meta: 'Fund Acive',
-      description:
-        'Whether the fund has been activated by the fund manager'
+      this.setState({accounts, fundContract: instance }, this.runExample);
+    } catch (error) {
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      );
+      console.log(error);
     }
-  ];
-
-    return <Card.Group items= {items}/>;
-  }
+  };
 
   onActivate = async () => {
-    // event.preventDefault();
+    const {accounts, fundContract} = this.state;
 
     try {
-    const {accounts, fundContract} = this.props;
-    await fundContract.methods.activateFund()
-      .send({
+    await fundContract.activateFund({
         from:accounts[0]
       });
       // Router.pushRoute("/milestones");
@@ -126,9 +56,8 @@ class ShowManager extends Component {
   onNextMilestone = async () => {
 
     try {
-    const {accounts, fundContract} = this.props;
-    await fundContract.methods.nextMilestone()
-      .send({
+    const {accounts, fundContract} = this.state;
+    await fundContract.nextMilestone({
         from:accounts[0]
       });
       // Router.pushRoute("/milestones");
@@ -136,7 +65,6 @@ class ShowManager extends Component {
       this.setState({ errorMessage: err.message });
     }
     this.setState({loading: false})
-
   }
 
   renderRows = () => {
@@ -187,8 +115,7 @@ class ShowManager extends Component {
           <h4>
             Fund Stats
           </h4>
-          {this.renderCards()}
-
+          <Stats/>
         <h3>Step 4: Activate Fund </h3>
           <p>
             Once the minimum number of donors and target amount has been
@@ -209,7 +136,7 @@ class ShowManager extends Component {
 
           <div style={{ marginBottom: "30px"}}>
              <NavLink to='/showDonor'>
-               <a>Click here to view the fund details as a donor </a>
+               <div>Click here to view the fund details as a donor </div>
              </NavLink>
           </div>
 

@@ -8,6 +8,8 @@ import truffleContract from "truffle-contract";
 
 class FundNew extends Component {
   state = {
+    accounts: null,
+    fundContract: null,
     name: "",
     descrip: "",
     target: "",
@@ -15,26 +17,18 @@ class FundNew extends Component {
     errorMessage: "",
     loading: false
   };
-state = { storageValue: 0, web3: null, accounts: null, contract: null };
 
 componentDidMount = async () => {
   try {
-    // Get network provider and web3 instance.
     const web3 = await getWeb3();
-
-    // Use web3 to get the user's accounts.
     const accounts = await web3.eth.getAccounts();
 
-    // Get the contract instance.
-    const Contract = truffleContract(Fund);
-    Contract.setProvider(web3.currentProvider);
-    const instance = await Contract.deployed();
+    const fundContract = truffleContract(Fund);
+    fundContract.setProvider(web3.currentProvider);
+    const instance = await fundContract.deployed();
 
-    // Set web3, accounts, and contract to the state, and then proceed with an
-    // example of interacting with the contract's methods.
-    this.setState({ web3, accounts, contract: instance }, this.runExample);
+    this.setState({accounts, fundContract: instance }, this.runExample);
   } catch (error) {
-    // Catch any errors for any of the above operations.
     alert(
       `Failed to load web3, accounts, or contract. Check console for details.`
     );
@@ -44,19 +38,16 @@ componentDidMount = async () => {
 
   onSubmit = async (event) => {
     this.setState({ loading: true, errorMessage: ""});
-    const {name, descrip, target, minDonors} = this.state;
+    const {name, descrip, target, minDonors, accounts, fundContract} = this.state;
 
     try {
-    const {accounts, fundContract} = this.props;
-    await fundContract.methods.initializeFund(
+    await fundContract.initializeFund(
       name,
       descrip,
       target,
-      minDonors
-    )
-      .send({
-        from:accounts[0]
-      });
+      minDonors,
+      { from: accounts[0] }
+    );
       // Router.pushRoute("/milestones");
     } catch (err) {
       this.setState({ errorMessage: err.message });

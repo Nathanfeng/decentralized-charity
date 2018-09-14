@@ -8,15 +8,15 @@ export default () => (
     <div style={{marginBottom: "30px"}}>
       <div className="ui secondary pointing menu">
         <NavLink to="/">
-          <a className="active item">
+          <div className="active item">
             Home
-          </a>
+          </div>
         </NavLink>
 
         <NavLink to="/new">
-          <a className="item">
+          <div className="item">
             Raise a Fund
-          </a>
+          </div>
         </NavLink>
 
         <Menu.Menu position="right">

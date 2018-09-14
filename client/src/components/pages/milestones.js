@@ -2,10 +2,15 @@ import React, { Component} from 'react';
 import { Table, Form, Button, Input, Message } from 'semantic-ui-react';
 import Layout from "../reusable/Layout";
 import Router from '../../routers/appRouter';
+import Fund from "../../contracts/Fund.json";
+import getWeb3 from "../../utils/getWeb3";
+import truffleContract from "truffle-contract";
 
 class Milestones extends Component {
 
   state = {
+    accounts: "",
+    fundContract: "",
     title: "",
     description: "",
     addErrorMessage: "",
@@ -14,17 +19,32 @@ class Milestones extends Component {
     deployLoading: false
   };
 
+  componentDidMount = async () => {
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+
+      const fundContract = truffleContract(Fund);
+      fundContract.setProvider(web3.currentProvider);
+      const instance = await fundContract.deployed();
+
+      this.setState({accounts, fundContract: instance }, this.runExample);
+    } catch (error) {
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      );
+      console.log(error);
+    }
+  };
+
   onAdd = async (event) => {
-    event.preventDefault();
+    const {title, description, fundContract, accounts} = this.state;
     this.setState({ addLoading: true, errorMessage: ""})
-    const {title, description} = this.state;
 
     try {
-      const {accounts, fundContract} = this.props;
-      await fundContract.methods
-        .addMilestone(title, description)
-        .send({ from: accounts[0] });
-
+      console.log(fundContract);
+      await fundContract.addMilestone(title, description, { from: accounts[0] });
+      this.setState({title: "", description: ""});
       // Router.pushRoute("/milestones");
     } catch (err) {
       this.setState({ addErrorMessage: err.message });
@@ -34,15 +54,11 @@ class Milestones extends Component {
   };
 
   onDeploy = async (event) => {
-    event.preventDefault();
+    const {title, description, fundContract, accounts} = this.state;
     this.setState({ deployLoading: true, errorMessage: ""})
 
     try {
-      const {accounts, fundContract} = this.props;
-      await fundContract.methods
-        .deployFund()
-        .send({ from: accounts[0]});
-
+      await fundContract.deployFund({from: accounts[0]});
       // Router.pushRoute("/showManager");
     } catch (err) {
       this.setState({ errorMessage: err.message });

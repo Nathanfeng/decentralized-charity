@@ -5,116 +5,44 @@ import Header from "../reusable/Header";
 import { Form, Table, Button, Card, Grid} from "semantic-ui-react";
 import ContributeForm from "../reusable/ContributeForm";
 import MilestoneTable from "../reusable/MilestoneTable";
+import Stats from "../reusable/Stats";
+import Fund from "../../contracts/Fund.json";
+import getWeb3 from "../../utils/getWeb3";
+import truffleContract from "truffle-contract";
 // import RequestRow from '../components/RequestRow';
 
 class ShowDonor extends Component {
 
   state = {
+    accounts:"",
+    fundContract: "",
     errorMessage: "",
     loading: false
   };
 
-  static async getInitialProps(props) {
-    const {accounts, fundContract} = this.props;
-    const milestoneCount = await fundContract.methods.getMilestonesCount().call();
-    const milestones = await Promise.all(
-      Array(parseInt(milestoneCount))
-        .fill()
-        .map((element, index) => {
-          return fundContract.methods.milestones(index).call();
-        })
-    );
-    const summary = await fundContract.methods.fundSummary().call();
-    return {
-      address: summary[0],
-      totalDonors: summary[1],
-      minNumberDonators: summary[2],
-      totalDonated: summary[3],
-      targetAmount: summary[4],
-      acceptingDonations: summary[5],
-      active: summary[6],
-      title: summary[7],
-      description: summary[8],
-      milestones,
-      milestoneCount,
-      fundContract,
-      accounts
-    };
-  }
+  componentDidMount = async () => {
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
 
-  renderCards() {
-    const {
-      manager,
-      totalDonors,
-      minNumberDonators,
-      totalDonated,
-      targetAmount,
-      acceptingDonations,
-      active,
-      accounts,
-      fundContract,
-      title,
-      description,
-      milestoneCount
-    } = this.props;
+      const fundContract = truffleContract(Fund);
+      fundContract.setProvider(web3.currentProvider);
+      const instance = await fundContract.deployed();
 
-
-    const items = [
-      {
-        header: manager,
-        meta: "Address of Manager",
-        description: "Manager that created this fund",
-        style: { overflowWrap: "break-word"}
-      },
-
-      {
-      header: totalDonors,
-      meta: 'Total Donors',
-      description:
-        'This is the total number of addresses that have donated to the fund'
-    },
-    {
-      header: minNumberDonators,
-      meta: 'Minimum Number of Donors',
-      description:
-        'The minimum number of donors for the fund to be deployed'
-    },
-    {
-      header: totalDonated,
-      meta: 'Total Donated',
-      description:
-        'The total amount donated to the fund so far'
-    },
-    {
-      header: targetAmount,
-      meta: 'Target Amount',
-      description:
-        'This is the minimum amount that the fund is hoping to raise'
-    },
-    {
-      header: acceptingDonations,
-      meta: 'Accepting Donations',
-      description:
-        'Whether you can donate to the fund'
-    },
-    {
-      header: active,
-      meta: 'Fund Acive',
-      description:
-        'Whether the fund has been activated by the fund manager'
+      this.setState({accounts, fundContract: instance }, this.runExample);
+    } catch (error) {
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      );
+      console.log(error);
     }
-  ];
-
-    return <Card.Group items= {items}/>;
-  }
+  };
 
   onClaim = async (event) => {
-    event.preventDefault();
 
     try {
-    const {accounts, fundContract} = this.props;
-    await fundContract.methods.claimFunds()
-      .send({
+    const {accounts, fundContract} = this.state;
+    await fundContract.claimFunds({
         from:accounts[0]
       });
       // Router.pushRoute("/");
@@ -136,7 +64,7 @@ class ShowDonor extends Component {
           <h4>
             Fund Details
           </h4>
-          {this.renderCards()}
+          <Stats/>
 
           <h3>Donate to this Fund</h3>
           <p>
@@ -146,9 +74,8 @@ class ShowDonor extends Component {
           <ContributeForm />
 
           <NavLink to="/showManager">
-             <a>Click here to view the fund details as a fund manager</a>
+             <div>Click here to view the fund details as a fund manager</div>
            </NavLink>
-
 
 
           <h4>Current Milestones</h4>
