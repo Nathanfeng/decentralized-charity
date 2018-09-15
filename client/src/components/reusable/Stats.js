@@ -107,7 +107,7 @@ class Stats extends Component {
       header: acceptingDonations,
       meta: 'Accepting Donations',
       description:
-        'Number of people who have already donated to this fund'
+        'Whether a donor can donate to the current fund'
     },
     {
       header: active,
