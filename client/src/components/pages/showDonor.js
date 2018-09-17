@@ -8,7 +8,6 @@ import Stats from "../reusable/Stats";
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
-// import RequestRow from '../components/RequestRow';
 
 class ShowDonor extends Component {
 

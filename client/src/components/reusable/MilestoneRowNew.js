@@ -24,21 +24,10 @@ class MilestoneRow extends Component {
       const fundContract = truffleContract(Fund);
       fundContract.setProvider(web3.currentProvider);
       const instance = await fundContract.deployed();
-      const milestoneInfo = await instance.returnMilestone(
-        this.props.id,
-        {from: accounts[0]}
-      );
-
-      // console.log(this.props.id);
 
       this.setState({
         accounts,
         fundContract: instance,
-        milestoneTitle: milestoneInfo[0],
-        milestoneDescription: milestoneInfo[1],
-        passingVotes: milestoneInfo[2],
-        failingVotes: milestoneInfo[3],
-        acceptingVotes: milestoneInfo[5]
        }, this.runExample);
     } catch (error) {
       alert(
@@ -73,19 +62,20 @@ class MilestoneRow extends Component {
   render() {
     const { Row, Cell } = Table;
     const {
+      id,
       milestoneTitle,
       milestoneDescription,
       passingVotes,
       failingVotes,
       acceptingVotes
-    } = this.state;
+    } = this.props;
 
     return (
       <Row
         disabled={acceptingVotes}
         positive={!acceptingVotes}
       >
-        <Cell>{this.props.id}</Cell>
+        <Cell>{id}</Cell>
         <Cell>{milestoneTitle}</Cell>
         <Cell>{milestoneDescription}</Cell>
         <Cell>

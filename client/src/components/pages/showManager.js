@@ -2,11 +2,11 @@ import React, {Component} from "react";
 import {NavLink} from 'react-router-dom';
 import Layout from "../reusable/Layout";
 import Stats from "../reusable/Stats";
+import MilestoneTable from "../reusable/MilestoneTable";
 import { Form, Table, Button} from "semantic-ui-react";
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
-// import RequestRow from '../components/RequestRow';
 
 
 class ShowManager extends Component {
@@ -101,7 +101,6 @@ class ShowManager extends Component {
 
 
   render() {
-    const { Header, Row, HeaderCell} = Table;
       return (
 
         <Layout>
@@ -129,28 +128,14 @@ class ShowManager extends Component {
             </Button>
           </Form>
 
-          <div style={{ marginBottom: "30px"}}>
+          <div style={{ marginBottom: "30px", marginTop: "10px"} }>
              <NavLink to='/showDonor'>
                <div>Click here to view the fund details as a donor </div>
              </NavLink>
           </div>
 
           <h4>Current Milestones</h4>
-          {/* <MilestoneTable/> */}
-
-          <Table>
-            <Header>
-              <Row>
-                <HeaderCell>ID</HeaderCell>
-                <HeaderCell>Title</HeaderCell>
-                <HeaderCell>Description</HeaderCell>
-                <HeaderCell>Pass Rate</HeaderCell>
-                <HeaderCell>Meets Milestone</HeaderCell>
-                <HeaderCell>Fails Milestone</HeaderCell>
-              </Row>
-            </Header>
-            {/* <Body>{this.renderRows()}</Body> */}
-          </Table>
+          <MilestoneTable/>
 
           <h3>Step 5: Next Milestone</h3>
           <p>
