@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 import MilestoneRowNew from './MilestoneRowNew';
+// import MilestoneData from './MilestoneData';
 import Fund from "../../contracts/Fund.json";
 import getWeb3 from "../../utils/getWeb3";
 import truffleContract from "truffle-contract";
+
 
 class MilestoneTable extends Component {
 
   state = {
     accounts: "",
     fundContract: "",
-    milestones: "",
-    milestoneCount: ""
-    // milestoneTitle: "",
-    // milestoneDescription: "",
-    // passingVotes: "",
-    // failingVotes: "",
-    // acceptingVotes: ""
-  }
+    milestoneCount: "",
+    milestones: ""
+  };
 
-
-  componentWillMount = async() => {
+  componentDidMount = async() => {
     try {
       console.log('mount');
       const web3 = await getWeb3();
@@ -38,7 +34,7 @@ class MilestoneTable extends Component {
           })
       );
       this.setState({accounts, fundContract: instance, milestoneCount, milestones}, this.runExample);
-      // console.log(this.state.milestones[0][0], 'mount');
+      console.log(this.state.milestones[0][0], 'mount');
       console.log('endmount')
     } catch (error) {
       alert(
@@ -49,23 +45,28 @@ class MilestoneTable extends Component {
   }
 
 
-  renderRows() {
-    const {milestones, milestoneCount} = this.state;
-    console.log(milestones[0]);
+  renderRows = () => {
+    const {
+      accounts,
+      fundContract,
+      milestones,
+      milestoneCount
+    } = this.state
+
+    console.log(milestones, 'milestones print');
     return Array(milestoneCount).map((_, index) => {
-      let milestone = this.state.milestones[index]
-      console.log(milestones, index);
-      // return (
-      //   <MilestoneRowNew
-      //     key={index}
-      //     id={index}
-      //     milestoneTitle={milestone[0]}
-      //     milestoneDescription={milestone[1]}
-      //     passingVotes={milestone[2]}
-      //     failingVotes={milestone[3]}
-      //     acceptingVotes={milestone[4]}
-      //   />
-      // )
+      console.log(milestoneCount);
+      return (
+        <MilestoneRowNew
+          key={index}
+          id={index}
+          milestoneTitle={milestones[0]}
+          milestoneDescription={milestones[1]}
+          passingVotes={milestones[2]}
+          failingVotes={milestones[3]}
+          acceptingVotes={milestones[4]}
+        />
+      )
     })
   }
 
@@ -91,3 +92,16 @@ class MilestoneTable extends Component {
 }
 
 export default MilestoneTable;
+
+// export default () => (
+//   <MilestoneData
+//     render={({accounts, fundContract, milestones, milestoneCount }) => (
+//       <MilestoneTable
+//         accounts={accounts}
+//         fundContract={fundContract}
+//         milestones={milestones}
+//         milestoneCount={milestoneCount}
+//       />
+//     )}
+//   />
+// )

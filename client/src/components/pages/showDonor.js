@@ -22,7 +22,6 @@ class ShowDonor extends Component {
     try {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
-
       const fundContract = truffleContract(Fund);
       fundContract.setProvider(web3.currentProvider);
       const instance = await fundContract.deployed();
