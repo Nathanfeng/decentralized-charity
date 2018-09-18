@@ -9,69 +9,70 @@ import truffleContract from "truffle-contract";
 
 class MilestoneTable extends Component {
 
-  state = {
-    accounts: "",
-    fundContract: "",
-    milestoneCount: "",
-    milestones: ""
-  };
-
-  componentDidMount = async() => {
-    try {
-      console.log('mount');
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      const fundContract = truffleContract(Fund);
-      fundContract.setProvider(web3.currentProvider);
-      const instance = await fundContract.deployed();
-      let milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
-      milestoneCount = milestoneCount.toNumber();
-      const milestones = await Promise.all(
-        Array(milestoneCount)
-          .fill()
-          .map((element, index) => {
-            return instance.returnMilestone(index, {from: accounts[0]});
-          })
-      );
-      this.setState({accounts, fundContract: instance, milestoneCount, milestones}, this.runExample);
-      console.log(this.state.milestones[0][0], 'mount');
-      console.log('endmount')
-    } catch (error) {
-      alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`
-      );
-      console.log(error);
-    }
+  getMilestoneInfo = async () => {
+    const web3 = await getWeb3();
+    const accounts = await web3.eth.getAccounts();
+    const fundContract = truffleContract(Fund);
+    fundContract.setProvider(web3.currentProvider);
+    const instance = await fundContract.deployed();
+    let milestoneCount = await instance.getMilestonesCount({from: accounts[0]});
+    milestoneCount = milestoneCount.toNumber();
+    const milestones = await Promise.all(
+      Array(milestoneCount)
+        .fill()
+        .map((element, index) => {
+          return instance.returnMilestone(index, {from: accounts[0]});
+        })
+    );
+    return milestones;
   }
 
+  renderRows = async () => {
+    const milestones = await this.getMilestoneInfo();
 
-  renderRows = () => {
-    const {
-      accounts,
-      fundContract,
-      milestones,
-      milestoneCount
-    } = this.state
+    const array = milestones.map((milestone, index) => {
+      console.log(index)
+      console.log(typeof milestone[2].toNumber())
 
-    console.log(milestones, 'milestones print');
-    return Array(milestoneCount).map((_, index) => {
-      console.log(milestoneCount);
       return (
         <MilestoneRowNew
           key={index}
           id={index}
-          milestoneTitle={milestones[0]}
-          milestoneDescription={milestones[1]}
-          passingVotes={milestones[2]}
-          failingVotes={milestones[3]}
-          acceptingVotes={milestones[4]}
+          milestoneTitle={milestone[0]}
+          milestoneDescription={milestone[1]}
+          passingVotes={milestone[2].toNumber()}
+          failingVotes={milestone[3].toNumber()}
+          acceptingVotes={milestone[4]}
         />
       )
     })
+    console.log(array)
+    return array;
   }
 
   render() {
+    console.log([
+        <MilestoneRowNew
+          key={0}
+          id={0}
+          milestoneTitle={'first'}
+          milestoneDescription={'first milestone'}
+          passingVotes={1}
+          failingVotes={2}
+          acceptingVotes={true}
+        />,
+        <MilestoneRowNew
+          key={1}
+          id={1}
+          milestoneTitle={'second'}
+          milestoneDescription={'second milestone'}
+          passingVotes={1}
+          failingVotes={2}
+          acceptingVotes={false}
+        />
+    ]);
     console.log('render')
+    // this.renderRows();
     const { Header, Row, HeaderCell, Body } = Table;
     return (
       <Table>
@@ -86,6 +87,26 @@ class MilestoneTable extends Component {
           </Row>
         </Header>
         <Body>{this.renderRows()}</Body>
+        {/* <Body>{[
+            <MilestoneRowNew
+              key={0}
+              id={0}
+              milestoneTitle={'first'}
+              milestoneDescription={'first milestone'}
+              passingVotes={1}
+              failingVotes={2}
+              acceptingVotes={true}
+            />,
+            <MilestoneRowNew
+              key={1}
+              id={1}
+              milestoneTitle={'second'}
+              milestoneDescription={'second milestone'}
+              passingVotes={1}
+              failingVotes={2}
+              acceptingVotes={false}
+            />
+        ]}</Body> */}
       </Table>
     )
   }
