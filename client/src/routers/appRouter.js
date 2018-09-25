@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
-import Index from "../components/pages/index";
-import Milestones from "../components/pages/milestones";
-import New from "../components/pages/new";
-import ShowDonor from "../components/pages/showDonor";
-import ShowManager from "../components/pages/showManager";
+import Home from "../pages/Home/home";
+import Milestones from "../pages/Milestones/milestonesContainer";
+import New from "../pages/New/newContainer";
+import ShowDonor from "../pages/ShowDonor/showDonorContainer";
+import ShowManager from "../pages/ShowManager/showManagerContainer";
 
 class Router extends Component {
   render(){
@@ -12,7 +12,7 @@ class Router extends Component {
       <BrowserRouter>
         <div>
           <Switch>
-            <Route path='/' component={Index} exact = {true}/>
+            <Route path='/' component={Home} exact = {true}/>
             <Route path='/milestones' component={Milestones}/>
             <Route path='/new' component={New}/>
             <Route path='/showDonor' component={ShowDonor}/>
