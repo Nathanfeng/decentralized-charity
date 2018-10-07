@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './header';
+import HeaderContainer from './headerContainer';
 import { Container } from 'semantic-ui-react';
 
 export default (props) => {
@@ -12,7 +12,7 @@ export default (props) => {
         }}>
           Decentralized Charity Platform
         </h1>
-        <Header />
+        <HeaderContainer />
         {props.children}
       </Container>
   );

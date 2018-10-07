@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-import { BrowserRouter, Route, Switch} from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 import Home from "../pages/Home/home";
 import Milestones from "../pages/Milestones/milestonesContainer";
 import New from "../pages/New/newContainer";
 import ShowDonor from "../pages/ShowDonor/showDonorContainer";
 import ShowManager from "../pages/ShowManager/showManagerContainer";
+import store from '../store'
 
-class Router extends Component {
+class AppRouter extends Component {
+
+
   render(){
+    const history = createHistory({
+      basename: '',
+    });
     return(
-      <BrowserRouter>
-        <div>
+      <Router history={history}>
           <Switch>
             <Route path='/' component={Home} exact = {true}/>
             <Route path='/milestones' component={Milestones}/>
@@ -18,10 +24,9 @@ class Router extends Component {
             <Route path='/showDonor' component={ShowDonor}/>
             <Route path='/showManager' component={ShowManager}/>
           </Switch>
-        </div>
-      </BrowserRouter>
+      </Router>
     )
   }
 }
 
-export default Router;
+export default AppRouter;

@@ -1,13 +1,17 @@
 const initialState = {
-  //new
-  title: "",
-  description: "",
-  targetAmount: "",
-  minNumberDonators: "",
-  errorMessage: "",
-  loading: false,
+  fundInfo: {
+    manager: '',
+    totalDonors: '',
+    minNumberDonators: '',
+    totalDonated: '',
+    targetAmount: '',
+    acceptingDonations: '',
+    active: '',
+    title: '',
+    description: ''
+  }
   //milestones
-  
+
 }
 
 const userReducer = (state = initialState, action) => {
@@ -17,7 +21,6 @@ const userReducer = (state = initialState, action) => {
       data: action.payload
     })
   }
-
   return state
 }
 

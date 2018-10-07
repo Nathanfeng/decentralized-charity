@@ -1,12 +1,17 @@
 import React, { Component } from "react";
-import Milestones from './components/pages/milestones';
+import {Router} from 'react-router-dom'
+import {initiateWeb3} from './utils/web3/web3Actions'
+import store from './store';
+import AppRouter from './routers/appRouter';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.initiateWeb3();
+  }
+
   render() {
     return (
-      <div>
-        <Milestones/>
-      </div>
+      <AppRouter/>
     )
   }
 }

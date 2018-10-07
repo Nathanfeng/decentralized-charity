@@ -2,26 +2,19 @@ import Fund from "../../contracts/Fund.json";
 import store from '../../store';
 const contract = require('truffle-contract')
 
-export const GET_ACCOUNTS = 'GET_ACCOUNTS';
-export const retrieveAccounts = (accounts) => {
+
+export const GET_CURRENT_ACCOUNT = 'GET_CURRENT_ACCOUNT';
+const retrieveCurrentAccount = (currentAccount) => {
   return {
-    type: GET_ACCOUNTS,
-    payload: accounts
+    type: GET_CURRENT_ACCOUNT,
+    currentAccount
   }
 }
 
-export function getAccounts() {
-  let web3 = store.getState().web3.web3Instance;
 
-  // if (typeof web3 !== 'undefined') {
+export const updateAccount = async () => {
 
-  web3.eth.getAccounts().then(function(accounts) {
-    // if (error) {
-    //   console.error(error);
-    // }
-    dispatch(retrieveAccounts({"accounts": accounts}))
-  }
-  // } else {
-  //   console.error('Web3 is not initialized.');
-  // }
+  const web3 = store.getState().web3.web3Instance;
+  const accounts = await store.getState().web3.web3Instance.eth.getAccounts();
+  this.props.dispatch(retrieveCurrentAccount(accounts[0]));
 }

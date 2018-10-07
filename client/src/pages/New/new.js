@@ -11,20 +11,16 @@ class FundNew extends Component {
     super(props)
 
     this.state = {
-      name: this.props.name
+      accounts: this.props.accounts,
+      fundContract: this.props.fundContract,
+      title: this.props.title,
+      description: this.props.description,
+      targetAmount: this.props.targetAmount,
+      minNumberDonators: this.props.minNumberDonators,
+      errorMessage: this.props.errorMessage,
+      loading: this.props.loading
     }
   }
-
-  state = {
-    accounts: this.props.accounts,
-    fundContract: this.props.fundContract,
-    title: this.props.title,
-    description: this.props.description,
-    targetAmount: this.props.targetAmount,
-    minNumberDonators: this.props.minNumberDonators,
-    errorMessage: this.props.errorMessage,
-    loading: this.props.loading
-  };
 
 
   onSubmit = async (event) => {

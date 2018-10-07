@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import New from './new'
-import { startFund } from './newActions'
+import { startFund, updateFundInfo } from './newActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -24,4 +24,4 @@ const newContainer = connect(
   mapDispatchToProps
 )(New)
 
-export default newContainer
+export default newContainer;

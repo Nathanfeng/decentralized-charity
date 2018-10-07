@@ -1,24 +1,18 @@
 import React, { Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import {Menu} from 'semantic-ui-react';
-import getWeb3 from "../../utils/getWeb3";
-import store from "../store";
-import { connect } from 'react-redux'
-import New from './new'
-import { getAccounts } from './headerActions'
+import store from "../../store";
+import New from '../../pages/New/new'
+import { updateAccount } from './headerActions'
 
 
 export class Header extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      accounts: props.accounts
-    }
   }
 
   componentDidMount = async () => {
-    this.getAccounts();
+    this.props.updateAccount();
   };
 
   render(){
@@ -39,7 +33,7 @@ export class Header extends Component {
 
             <Menu.Menu position="right">
               <a className="item">
-                Current Account: {this.state.accounts[0]}
+                Current Account: {store.getState().currentProvider}
               </a>
             </Menu.Menu>
           </div>
@@ -48,21 +42,4 @@ export class Header extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    accounts: state.accounts
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getAccounts: () => {
-      dispatch(getAccounts())
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header)
+export default Header;
