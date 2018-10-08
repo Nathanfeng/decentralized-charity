@@ -24,11 +24,14 @@ const getWeb3 = () => {
   });
 };
 
-export const initiateWeb3 = () => async dispatch => {
+
+export const initiateWeb3 = async() => {
   let web3;
 
   try {
+    debugger
     web3 = await getWeb3();
+    debugger
   } catch (e) {
     console.error(e);
   }
@@ -36,6 +39,8 @@ export const initiateWeb3 = () => async dispatch => {
   let result = {
     web3Instance: web3
   }
+  return (dispatch) => {
 
-  dispatch(web3Initialized(result));
-};
+    dispatch(web3Initialized(result));
+  }
+}

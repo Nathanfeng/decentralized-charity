@@ -10,22 +10,21 @@ import store from '../store'
 
 class AppRouter extends Component {
 
-
   render(){
     const history = createHistory({
       basename: '',
-    });
-    return(
-      <Router history={history}>
-          <Switch>
-            <Route path='/' component={Home} exact = {true}/>
-            <Route path='/milestones' component={Milestones}/>
-            <Route path='/new' component={New}/>
-            <Route path='/showDonor' component={ShowDonor}/>
-            <Route path='/showManager' component={ShowManager}/>
-          </Switch>
-      </Router>
-    )
+  });
+  return(
+    <Router history={history}>
+        <Switch>
+          <Route path='/' component={Home} exact = {true}/>
+          <Route path='/milestones' component={Milestones}/>
+          <Route path='/new' component={New}/>
+          <Route path='/showDonor' component={ShowDonor}/>
+          <Route path='/showManager' component={ShowManager}/>
+        </Switch>
+    </Router>
+  )
   }
 }
 

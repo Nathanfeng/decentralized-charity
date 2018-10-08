@@ -12,9 +12,12 @@ const retrieveCurrentAccount = (currentAccount) => {
 }
 
 
-export const updateAccount = async () => {
-
-  const web3 = store.getState().web3.web3Instance;
-  const accounts = await store.getState().web3.web3Instance.eth.getAccounts();
-  this.props.dispatch(retrieveCurrentAccount(accounts[0]));
+export const updateAccount = async() => {
+  const Store = store;
+  debugger
+  const web3 = Store.getState().web3.web3Instance;
+  const accounts = await Store.getState().web3.web3Instance.eth.getAccounts();
+  return (dispatch) => {
+    dispatch(retrieveCurrentAccount(accounts[0]));
+  }
 }

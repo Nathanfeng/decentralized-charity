@@ -5,9 +5,13 @@ import store from './store';
 import AppRouter from './routers/appRouter';
 
 class App extends Component {
-  componentDidMount() {
+
+  constructor(props) {
+    super(props)
     this.props.initiateWeb3();
   }
+  // componentDidMount() {
+  // }
 
   render() {
     return (
