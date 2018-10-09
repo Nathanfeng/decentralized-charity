@@ -25,21 +25,20 @@ const getWeb3 = () => {
 };
 
 
-export const initiateWeb3 = async() => {
+export const initiateWeb3 = () => {
   let web3;
+  return async (dispatch) => {
+    try {
+      debugger
+      web3 = await getWeb3();
+      debugger
+    } catch (e) {
+      console.error(e);
+    }
 
-  try {
-    debugger
-    web3 = await getWeb3();
-    debugger
-  } catch (e) {
-    console.error(e);
-  }
-
-  let result = {
-    web3Instance: web3
-  }
-  return (dispatch) => {
+    let result = {
+      web3Instance: web3
+    }
 
     dispatch(web3Initialized(result));
   }

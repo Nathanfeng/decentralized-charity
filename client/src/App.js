@@ -6,14 +6,13 @@ import AppRouter from './routers/appRouter';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
+  componentDidMount() {
+    console.log('we are in app')
     this.props.initiateWeb3();
   }
-  // componentDidMount() {
-  // }
 
   render() {
+    
     return (
       <AppRouter/>
     )

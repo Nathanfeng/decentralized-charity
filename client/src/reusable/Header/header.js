@@ -2,17 +2,20 @@ import React, { Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import {Menu} from 'semantic-ui-react';
 import store from "../../store";
-import New from '../../pages/New/new'
-import { updateAccount } from './headerActions'
+import New from '../../pages/New/new';
+import { updateAccount } from './headerActions';
 
 
 export class Header extends Component {
-  constructor(props) {
-    super(props)
-  }
 
-  componentDidMount = async () => {
-    this.props.updateAccount();
+
+  componentDidMount = () => {
+    console.log('we are in header')
+    debugger
+    this.props.updateAccount()
+    // const Store = store;
+    // if(Store.getState().web3.web3Instance) {
+    // }
   };
 
   render(){
@@ -33,7 +36,7 @@ export class Header extends Component {
 
             <Menu.Menu position="right">
               <a className="item">
-                Current Account: {store.getState().currentProvider}
+                Current Account: {store.getState().currentAccount}
               </a>
             </Menu.Menu>
           </div>
