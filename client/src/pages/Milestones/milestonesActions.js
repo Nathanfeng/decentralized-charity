@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-function addMilestone() {
+export function addMilestone() {
   return (
     {
       type: ADD_MILESTONE,
